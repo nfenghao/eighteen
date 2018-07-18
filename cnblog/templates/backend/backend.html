@@ -1,0 +1,46 @@
+{% extends 'backend/base.html' %}
+
+
+
+{% block content %}
+ <div class="article_list small">
+                             <table class="table table-hover table-striped ">
+                                 <thead>
+                                     <th>文章标题</th>
+                                     <th>评论数量</th>
+                                     <th>点赞数量</th>
+                                     <th>操作1</th>
+                                     <th>操作2</th>
+                                 </thead>
+                                 <tbody>
+                                     {% for article in article_list %}
+                                     <tr id="p{{ article.pk }}">
+                                         <td>{{ article.title }}</td>
+                                         <td>{{ article.comment_count }}</td>
+                                         <td>{{ article.up_count }}</td>
+                                         <td><button type="submit" class="del btn btn-danger btn-sm" name="{{ article.title }}" value="{{ article.pk }}">删除</button></td>
+                                         <td><button type="submit" class="del btn btn-danger btn-sm" ><a href="/edit_article/{{ article.pk }}/">编辑</a></button></td>
+
+                                     </tr>
+                                     {% endfor %}
+
+                                 </tbody>
+                             </table>
+                        </div>
+    <script>
+    $('.del').click(function () {
+        var article_id=$(this).val();
+        console.log(article_id);
+        var url='/delete/'+article_id;
+        console.log(url);
+        $.ajax({
+        url:url,
+        type:'get',
+        success:function (data) {
+            $('#p'+data).hide()
+        }
+    })
+    });
+
+    </script>
+{% endblock %}
